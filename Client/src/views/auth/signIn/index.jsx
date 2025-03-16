@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
+import React, { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useFormik } from "formik"
 // Chakra imports
 import {
   Box,
@@ -16,47 +16,46 @@ import {
   InputGroup,
   InputRightElement,
   Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+  useColorModeValue
+} from "@chakra-ui/react"
 
 // Custom components
-import DefaultAuth from "layouts/auth/Default";
+import DefaultAuth from "layouts/auth/Default"
 // Assets
-
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { RiEyeCloseLine } from "react-icons/ri";
-import { postApi } from "services/api";
-import { loginSchema } from "schema";
-import { toast } from "react-toastify";
-import Spinner from "components/spinner/Spinner";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchImage } from "../../../redux/slices/imageSlice";
-import { setUser } from "../../../redux/slices/localSlice";
+import { MdOutlineRemoveRedEye } from "react-icons/md"
+import { RiEyeCloseLine } from "react-icons/ri"
+import { postApi } from "services/api"
+import { loginSchema } from "schema"
+import { toast } from "react-toastify"
+import Spinner from "components/spinner/Spinner"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchImage } from "../../../redux/slices/imageSlice"
+import { setUser } from "../../../redux/slices/localSlice"
 
 function SignIn() {
   // Chakra color mode
-  const textColor = useColorModeValue("navy.700", "white");
-  const textColorSecondary = "gray.400";
-  const brandStars = useColorModeValue("brand.500", "brand.400");
-  const [isLoding, setIsLoding] = React.useState(false);
-  const [checkBox, setCheckBox] = React.useState(true);
+  const textColor = useColorModeValue("navy.700", "white")
+  const textColorSecondary = "gray.400"
+  const brandStars = useColorModeValue("brand.500", "brand.400")
+  const [isLoding, setIsLoding] = React.useState(false)
+  const [checkBox, setCheckBox] = React.useState(true)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     // Dispatch the fetchRoles action on component mount
-    dispatch(fetchImage("?isActive=true"));
-  }, [dispatch]);
+    dispatch(fetchImage("?isActive=true"))
+  }, [dispatch])
 
-  const image = useSelector((state) => state?.images?.images);
+  const image = useSelector((state) => state?.images?.images)
 
-  const [show, setShow] = React.useState(false);
-  const showPass = () => setShow(!show);
+  const [show, setShow] = React.useState(false)
+  const showPass = () => setShow(!show)
 
   const initialValues = {
     username: "",
-    password: "",
-  };
+    password: ""
+  }
   const {
     errors,
     values,
@@ -64,34 +63,35 @@ function SignIn() {
     handleBlur,
     handleChange,
     resetForm,
-    handleSubmit,
+    handleSubmit
   } = useFormik({
     initialValues: initialValues,
     validationSchema: loginSchema,
     onSubmit: (values, { resetForm }) => {
-      login();
-    },
-  });
-  const navigate = useNavigate();
+      login()
+    }
+  })
+  const navigate = useNavigate()
 
   const login = async () => {
+    console.log("login")
     try {
-      setIsLoding(true);
-      let response = await postApi("api/user/login", values, checkBox);
+      setIsLoding(true)
+      let response = await postApi("api/user/login", values, checkBox)
       if (response && response.status === 200) {
-        navigate("/superAdmin");
-        toast.success("Login Successfully!");
-        resetForm();
+        navigate("/superAdmin")
+        toast.success("Login Successfully!")
+        resetForm()
         dispatch(setUser(response?.data?.user))
       } else {
-        toast.error(response.response.data?.error);
+        toast.error(response.response.data?.error)
       }
     } catch (e) {
-      console.log(e);
+      console.log(e)
     } finally {
-      setIsLoding(false);
+      setIsLoding(false)
     }
-  };
+  }
 
   return (
     <DefaultAuth
@@ -267,7 +267,7 @@ function SignIn() {
         </Flex>
       </Flex>
     </DefaultAuth>
-  );
+  )
 }
 
-export default SignIn;
+export default SignIn
